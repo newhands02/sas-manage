@@ -1,9 +1,7 @@
 package com.sas.utils;
 
-import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * 雪花算法ID生成器

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.assetMapper">
+    <select id="listAssets" parameterMap="Map" resultType="com.example.demo.entity.Asset">
+        select  * from companys as a
+        left join assets as b on a.id = b.company_key
+        <where>
+            <if test="startTime !=null and startTime !=''">
+                and b.update_time between #{startTime} and #{endTime}
+            </if>
+            <if test="name != null and name != ''">
+                and a.name like concat('%',#{name},'%')
+            </if>
+            <if test="code != null and code != ''">
+                and a.code like concat('%',#{code},'%')
+            </if>
+        </where>
+    </select>
+    <insert id="insertAssetById"  keyProperty="id" parameterMap="com.sas.entity.assetEntity">
+        INSERT INTO assets(
+        id,company_key,monetary_funds,trading_financial_assets,
+        accounts_notes_receivable,prepayments,total_other_receivables,
+        inventory,one_year_non_current_assets,other_current_assets,
+        available_for_sale_financial_assets,held_to_maturity_investment,
+        long_term_equity_investment,other_equity_instrument_investments,
+        other_non_current_financial_assets,investment_oriented_real_estate,
+        fixed_assets,construction_in_progress,intangible_assets,goodwill,
+        long_term_deferred_expenses,other_non_current_assets,output_asset_reduction,
+        update_time) VALUES(#{id},
+        #{companyKey}, #{monetaryFunds},
+        #{tradingFinancialAssets},
+        #{accountsNotesReceivable},
+        #{prepayments},
+        #{totalOtherReceivables},
+        #{inventory},
+        #{oneYearNonCurrentAssets},
+        #{otherCurrentAssets},
+        #{availableForSaleFinancialAssets},
+        #{heldToMaturityInvestment},
+        #{longTermEquityInvestment},
+        #{otherEquityInstrumentInvestments},
+        #{otherNonCurrentFinancialAssets},
+        #{investmentOrientedRealEstate},
+        #{fixedAssets},
+        #{constructionInProgress},
+        #{intangibleAssets},
+        #{goodwill},
+        #{longTermDeferredExpenses},
+        #{otherNonCurrentAssets},
+        #{outputAssetReduction},
+        NOW())
+    </insert>
+
+    <update id="updateById" parameterType="com.sas.entity.assetEntity">
+        UPDATE assets
+        SET updateTime=now()
+        <if test="companyKey !=null and companyKey != ''">
+            , company_key=#{companyKey}
+        </if>
+        <if test="monetaryFunds !=null and monetaryFunds != ''">
+            , monetary_funds=#{monetaryFunds}
+        </if>
+        <if test="tradingFinancialAssets !=null and tradingFinancialAssets != ''">
+            , trading_financial_assets=#{tradingFinancialAssets}
+        </if>
+        <if test="accountsNotesReceivable !=null and accountsNotesReceivable != ''">
+            , accounts_notes_receivable=#{accountsNotesReceivable}
+        </if>
+        <if test="prepayments !=null and prepayments != ''">
+            , prepayments=#{prepayments}
+        </if>
+        <if test="totalOtherReceivables !=null and totalOtherReceivables != ''">
+            , total_other_receivables=#{totalOtherReceivables}
+        </if>
+        <if test="inventory !=null and inventory != ''">
+            , inventory=#{inventory}
+        </if>
+        <if test="oneYearNonCurrentAssets !=null and oneYearNonCurrentAssets != ''">
+            , one_year_non_current_assets=#{oneYearNonCurrentAssets}
+        </if>
+        <if test="otherCurrentAssets !=null and otherCurrentAssets != ''">
+            , other_current_assets=#{otherCurrentAssets}
+        </if>
+        <if test="availableForSaleFinancialAssets !=null and availableForSaleFinancialAssets != ''">
+            , available_for_sale_financial_assets=#{availableForSaleFinancialAssets}
+        </if>
+        <if test="heldToMaturityInvestment !=null and heldToMaturityInvestment != ''">
+            , held_to_maturity_investment=#{heldToMaturityInvestment}
+        </if>
+        <if test="longTermEquityInvestment !=null and longTermEquityInvestment != ''">
+            , long_term_equity_investment=#{longTermEquityInvestment}
+        </if>
+        <if test="otherEquityInstrumentInvestments !=null and otherEquityInstrumentInvestments != ''">
+            , other_equity_instrument_investments=#{otherEquityInstrumentInvestments}
+        </if>
+        <if test="otherNonCurrentFinancialAssets !=null and otherNonCurrentFinancialAssets != ''">
+            , other_non_current_financial_assets=#{otherNonCurrentFinancialAssets}
+        </if>
+        <if test="investmentOrientedRealEstate !=null and investmentOrientedRealEstate != ''">
+            , investment_oriented_real_estate=#{investmentOrientedRealEstate}
+        </if>
+        <if test="fixedAssets !=null and fixedAssets != ''">
+            , fixed_assets=#{fixedAssets}
+        </if>
+        <if test="constructionInProgress !=null and constructionInProgress != ''">
+            , construction_in_progress=#{constructionInProgress}
+        </if>
+        <if test="intangibleAssets !=null and intangibleAssets != ''">
+            , intangible_assets=#{intangibleAssets}
+        </if>
+        <if test="goodwill !=null and goodwill != ''">
+            , goodwill=#{goodwill}
+        </if>
+        <if test="longTermDeferredExpenses !=null and longTermDeferredExpenses != ''">
+            , long_term_deferred_expenses=#{longTermDeferredExpenses}
+        </if>
+        <if test="otherNonCurrentAssets !=null and otherNonCurrentAssets != ''">
+            , other_non_current_assets=#{otherNonCurrentAssets}
+        </if>
+        <if test="outputAssetReduction !=null and outputAssetReduction != ''">
+            , output_asset_reduction=#{outputAssetReduction}
+        </if>
+        WHERE id=#{id}
+        limit 1
+    </update>
+
+    <delete id="deleteAssetById">
+        DELETE FROM assets WHERE id=#{id}
+    </delete>
+</mapper>

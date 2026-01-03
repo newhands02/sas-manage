@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.mapper.companyMapper">
+    <select id="listCompanys" parameterMap="Map" resultType="com.sas.entity.companyEntity">
+        select  * from companys
+        <where>
+            <if test="startTime !=null and startTime !=''">
+                and update_time between #{startTime} and #{endTime}
+            </if>
+            <if test="name != null and name != ''">
+                and name like concat('%',#{name},'%')
+            </if>
+            <if test="code != null and code != ''">
+                and code like concat('%',#{code},'%')
+            </if>
+        </where>
+    </select>
+    <insert id="insertCompanyById"  keyProperty="id" parameterMap="com.sas.entity.companyEntity">
+        INSERT INTO assets(id,name,code,place) VALUES(#{id}, #{name}, #{code}, #{place}})
+    </insert>
+
+    <update id="updateById" parameterType="com.sas.entity.companyEntity">
+        UPDATE assets
+        SET name=#{name},
+        code=#{code},
+        place=#{place},
+        updateTime=now()
+        WHERE id=#{id}
+    </update>
+
+    <delete id="deleteCompanyById">
+        DELETE FROM assets WHERE id=#{id} limit 1
+    </delete>
+</mapper>
