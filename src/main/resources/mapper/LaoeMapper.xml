@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sas.mapper.LaoeMapper">
+    <select id="listLaoes" parameterType="java.util.Map" resultType="com.sas.entity.LaoeEntity">
+        select b.*,a.name from companys as a
+        left join laoe as b on a.id = b.company_key
+        <where>
+            <if test="startTime !=null and startTime !=''">
+                and b.update_time between #{startTime} and #{endTime}
+            </if>
+            <if test="name != null and name != ''">
+                and a.name like concat('%',#{name},'%')
+            </if>
+            <if test="code != null and code != ''">
+                and a.code like concat('%',#{code},'%')
+            </if>
+            and bactive=1
+        </where>
+    </select>
+    <select id="selectLaoeById" resultType="com.sas.entity.LaoeEntity">
+        select * from laoe where company_key=#{companyKey}
+    </select>
+    <insert id="insertLaoe" parameterType="com.sas.entity.LaoeEntity">
+        INSERT INTO laoe(company_key,
+        short_term_borrowing,
+        financial_liabilities_included,
+        accounts_payable,
+        advance_from_customers,
+        contract_liability,
+        other_payables,
+        one_year_non_current_liabilities,
+        other_current_liabilities,
+        long_term_loans,
+        payable_bonds,
+        long_term_payables,
+        provisions,
+        other_non_current_liabilities,
+        total_liabilities,
+        equity_attributable_to_powner,
+        share_capital,current_price,
+        market_value,report_time,update_time) VALUES(
+        #{companyKey},
+        #{shortTermBorrowing},
+        #{financialLiabilitiesIncluded},
+        #{accountsPayable},
+        #{advanceFromCustomers},
+        #{contractLiability},
+        #{otherPayables},
+        #{oneYearNonCurrentLiabilities},
+        #{otherCurrentLiabilities},
+        #{longTermLoans},
+        #{payableBonds},
+        #{longTermPayables},
+        #{provisions},
+        #{otherNonCurrentLiabilities},
+        #{totalLiabilities},
+        #{equityAttributableToPowner},
+        #{shareCapital},
+        #{currentPrice},#{marketValue},#{reportTime},NOW())
+    </insert>
+    <update id="updateLaoeById" parameterType="com.sas.entity.LaoeEntity">
+        UPDATE laoe
+        SET update_time=now()
+        <if test="companyKey !=null and companyKey != ''">
+            , company_key=#{companyKey}
+        </if>
+        <if test="shortTermBorrowing !=null and shortTermBorrowing != ''">
+            , short_term_borrowing=#{shortTermBorrowing}
+        </if>
+        <if test="financialLiabilitiesIncluded !=null and financialLiabilitiesIncluded != ''">
+            , financial_liabilities_included=#{financialLiabilitiesIncluded}
+        </if>
+        <if test="accountsPayable !=null and accountsPayable != ''">
+            , accounts_payable=#{accountsPayable}
+        </if>
+        <if test="advanceFromCustomers !=null and advanceFromCustomers != ''">
+            , advance_from_customers=#{advanceFromCustomers}
+        </if>
+        <if test="contractLiability !=null and contractLiability != ''">
+            , contract_liability=#{contractLiability}
+        </if>
+        <if test="otherPayables !=null and otherPayables != ''">
+            , other_payables=#{otherPayables}
+        </if>
+        <if test="oneYearNonCurrentLiabilities !=null and oneYearNonCurrentLiabilities != ''">
+            , one_year_non_current_liabilities=#{oneYearNonCurrentLiabilities}
+        </if>
+        <if test="otherCurrentLiabilities !=null and otherCurrentLiabilities != ''">
+            , other_current_liabilities=#{otherCurrentLiabilities}
+        </if>
+        <if test="longTermLoans !=null and longTermLoans != ''">
+            , long_term_loans=#{longTermLoans}
+        </if>
+        <if test="payableBonds !=null and payableBonds != ''">
+            , payable_bonds=#{payableBonds}
+        </if>
+        <if test="longTermPayables !=null and longTermPayables != ''">
+            , long_term_payables=#{longTermPayables}
+        </if>
+        <if test="provisions !=null and provisions != ''">
+            , provisions=#{provisions}
+        </if>
+        <if test="otherNonCurrentLiabilities !=null and otherNonCurrentLiabilities != ''">
+            , other_non_current_liabilities=#{otherNonCurrentLiabilities}
+        </if>
+        <if test="totalLiabilities !=null and totalLiabilities != ''">
+            , total_liabilities=#{totalLiabilities}
+        </if>
+        <if test="equityAttributableToPowner !=null and equityAttributableToPowner != ''">
+            , equity_attributable_to_powner=#{equityAttributableToPowner}
+        </if>
+        <if test="shareCapital !=null and shareCapital != ''">
+            , share_capital=#{shareCapital}
+        </if>
+        <if test="currentPrice !=null and currentPrice != ''">
+            , current_price=#{currentPrice}
+        </if>
+        <if test="marketValue !=null and marketValue != ''">
+            , market_value=#{marketValue}
+        </if>
+        <if test="reportTime !=null and reportTime != ''">
+            , report_time=#{reportTime}
+        </if>
+        <where>
+            id=#{id}
+        </where>
+        limit 1
+    </update>
+    <delete id="deleteLaoeById">
+        DELETE FROM laoe WHERE id=#{id}
+    </delete>
+</mapper>

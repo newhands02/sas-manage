@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sas.mapper.ProfitMapper">
+    <select id="listProfits" parameterType="java.util.Map" resultType="com.sas.entity.ProfitEntity">
+        select b.*,a.name from companys as a
+        left join profit as b on a.id = b.company_key
+        <where>
+            <if test="startTime !=null and startTime !=''">
+                and b.update_time between #{startTime} and #{endTime}
+            </if>
+            <if test="name != null and name != ''">
+                and a.name like concat('%',#{name},'%')
+            </if>
+            <if test="code != null and code != ''">
+                and a.code like concat('%',#{code},'%')
+            </if>
+            and bactive=1
+        </where>
+    </select>
+    <select id="selectProfitById" resultType="com.sas.entity.ProfitEntity">
+        select * from profit where company_key=#{companyKey}
+    </select>
+    <insert id="insertProfitById"  keyProperty="id" parameterType="com.sas.entity.ProfitEntity">
+        INSERT INTO profit(id,company_key,operating_revenue,goods_sold_cost,sales_expenses,
+        administrative_expenses,rd_expense,financial_expenses,net_profit_current,net_profit,
+        operating_activities_net_cash,annual_capital_expenditure,annual_depreciation_amortization,
+        profit_increase,asset_adjustment_increase,report_time,update_time) VALUES(#{id},
+        #{companyKey}, #{operatingRevenue}, #{goodsSoldCost}, #{salesExpenses},
+        #{administrativeExpenses}, #{rdExpense}, #{financialExpenses}, #{netProfitCurrent}, #{netProfit},
+        #{operatingActivitiesNetCash}, #{annualCapitalExpenditure}, #{annualDepreciationAmortization},
+        #{profitIncrease}, #{assetAdjustmentIncrease}, #{reportTime},NOW())
+    </insert>
+    <update id="updateProfitById" parameterType="com.sas.entity.ProfitEntity">
+        UPDATE profit SET
+        update_time=now()
+        <if test="companyKey !=null and companyKey != ''">
+            , company_key=#{companyKey}
+        </if>
+        <if test="operatingRevenue !=null and operatingRevenue != ''">
+            , operating_revenue=#{operatingRevenue}
+        </if>
+        <if test="goodsSoldCost !=null and goodsSoldCost != ''">
+            , goods_sold_cost=#{goodsSoldCost}
+        </if>
+        <if test="salesExpenses !=null and salesExpenses != ''">
+            , sales_expenses=#{salesExpenses}
+        </if>
+        <if test="administrativeExpenses !=null and administrativeExpenses != ''">
+            , administrative_expenses=#{administrativeExpenses}
+        </if>
+        <if test="rdExpense !=null and rdExpense != ''">
+            , rd_expense=#{rdExpense}
+        </if>
+        <if test="financialExpenses !=null and financialExpenses != ''">
+            , financial_expenses=#{financialExpenses}
+        </if>
+        <if test="netProfitCurrent !=null and netProfitCurrent != ''">
+            , net_profit_current=#{netProfitCurrent}
+        </if>
+        <if test="netProfit !=null and netProfit != ''">
+            , net_profit=#{netProfit}
+        </if>
+        <if test="operatingActivitiesNetCash !=null and operatingActivitiesNetCash != ''">
+            , operating_activities_net_cash=#{operatingActivitiesNetCash}
+        </if>
+        <if test="annualCapitalExpenditure !=null and annualCapitalExpenditure != ''">
+            , annual_capital_expenditure=#{annualCapitalExpenditure}
+        </if>
+        <if test="annualDepreciationAmortization !=null and annualDepreciationAmortization != ''">
+            , annual_depreciation_amortization=#{annualDepreciationAmortization}
+        </if>
+        <if test="profitIncrease !=null and profitIncrease != ''">
+            , profit_increase=#{profitIncrease}
+        </if>
+        <if test="assetAdjustmentIncrease !=null and assetAdjustmentIncrease != ''">
+            , asset_adjustment_increase=#{assetAdjustmentIncrease}
+        </if>
+        <if test="reportTime !=null and reportTime != ''">
+            , report_time=#{reportTime}
+        </if>
+        <where>
+            id=#{id}
+        </where>
+        limit 1
+    </update>
+    <delete id="deleteProfitById">
+        DELETE FROM profit WHERE id=#{id}
+    </delete>
+</mapper>

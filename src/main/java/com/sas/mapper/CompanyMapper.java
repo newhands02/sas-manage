@@ -1,0 +1,33 @@
+package com.sas.mapper;
+
+import com.sas.entity.CompanyEntity;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
+import java.util.List;
+import java.util.Map;
+
+@Mapper
+public interface CompanyMapper {
+
+    @Select("select * from company")
+    List<CompanyEntity> selectAll();
+
+    List<CompanyEntity> listCompanys(Map map);
+
+    boolean insertCompanyById(CompanyEntity companyEntity);
+
+    boolean deleteCompanyById(String id);
+
+    boolean updateCompanyById(CompanyEntity companyEntity);
+
+    @Update("update companys set bactive = 0 where name = #{name} and code=#{code} limit 1")
+    boolean disableCompany(Map map);
+
+    @Select("select * from companys where name = #{name} and code=#{code} limit 1")
+    CompanyEntity selectCompanyByName(Map map);
+
+    @Update("update companys set bactive = 1 where id = #{id} limit 1")
+    boolean activeCompanyById(String id);
+}

@@ -85,6 +85,9 @@ public class SnowflakeIdGenerator {
                 | (workerId << WORKER_SHIFT)
                 | sequence;
     }
+    public String nextIdStr(){
+        return String.valueOf(nextId());
+    }
 
     /**
      * 阻塞到下一个毫秒，直到获得新的时间戳

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.mapper.companyMapper">
-    <select id="listCompanys" parameterMap="Map" resultType="com.sas.entity.companyEntity">
+<mapper namespace="com.sas.mapper.CompanyMapper">
+    <select id="listCompanys" parameterType="java.util.Map" resultType="com.sas.entity.CompanyEntity">
         select  * from companys
         <where>
             <if test="startTime !=null and startTime !=''">
@@ -15,22 +15,23 @@
             <if test="code != null and code != ''">
                 and code like concat('%',#{code},'%')
             </if>
+            and bactive=1
         </where>
     </select>
-    <insert id="insertCompanyById"  keyProperty="id" parameterMap="com.sas.entity.companyEntity">
-        INSERT INTO assets(id,name,code,place) VALUES(#{id}, #{name}, #{code}, #{place}})
+    <insert id="insertCompanyById"  keyProperty="id" parameterType="com.sas.entity.CompanyEntity">
+        INSERT INTO companys(id,name,code,place,update_time) VALUES(#{id}, #{name}, #{code}, #{place},NOW())
     </insert>
 
-    <update id="updateById" parameterType="com.sas.entity.companyEntity">
-        UPDATE assets
+    <update id="updateById" parameterType="com.sas.entity.CompanyEntity">
+        UPDATE companys
         SET name=#{name},
         code=#{code},
         place=#{place},
-        updateTime=now()
+        update_time=now()
         WHERE id=#{id}
     </update>
 
     <delete id="deleteCompanyById">
-        DELETE FROM assets WHERE id=#{id} limit 1
+        DELETE FROM companys WHERE id=#{id} limit 1
     </delete>
 </mapper>

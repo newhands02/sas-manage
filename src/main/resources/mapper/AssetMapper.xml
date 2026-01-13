@@ -2,9 +2,9 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.mapper.assetMapper">
-    <select id="listAssets" parameterMap="Map" resultType="com.example.demo.entity.Asset">
-        select  * from companys as a
+<mapper namespace="com.sas.mapper.AssetMapper">
+    <select id="listAssets" parameterType="java.util.Map" resultType="com.sas.entity.AssetEntity">
+        select b.*,a.name from companys as a
         left join assets as b on a.id = b.company_key
         <where>
             <if test="startTime !=null and startTime !=''">
@@ -16,9 +16,13 @@
             <if test="code != null and code != ''">
                 and a.code like concat('%',#{code},'%')
             </if>
+            and bactive=1
         </where>
     </select>
-    <insert id="insertAssetById"  keyProperty="id" parameterMap="com.sas.entity.assetEntity">
+    <select id="selectAssetByKey" resultType="com.sas.entity.AssetEntity">
+        select * from assets where company_key=#{companyKey}
+    </select>
+    <insert id="insertAsset"  parameterType="com.sas.entity.AssetEntity">
         INSERT INTO assets(
         id,company_key,monetary_funds,trading_financial_assets,
         accounts_notes_receivable,prepayments,total_other_receivables,
@@ -27,7 +31,7 @@
         long_term_equity_investment,other_equity_instrument_investments,
         other_non_current_financial_assets,investment_oriented_real_estate,
         fixed_assets,construction_in_progress,intangible_assets,goodwill,
-        long_term_deferred_expenses,other_non_current_assets,output_asset_reduction,
+        long_term_deferred_expenses,other_non_current_assets,output_asset_reduction,report_time,
         update_time) VALUES(#{id},
         #{companyKey}, #{monetaryFunds},
         #{tradingFinancialAssets},
@@ -50,12 +54,13 @@
         #{longTermDeferredExpenses},
         #{otherNonCurrentAssets},
         #{outputAssetReduction},
+        #{reportTime},
         NOW())
     </insert>
 
-    <update id="updateById" parameterType="com.sas.entity.assetEntity">
+    <update id="updateAssetById" parameterType="com.sas.entity.AssetEntity">
         UPDATE assets
-        SET updateTime=now()
+        SET update_time=now()
         <if test="companyKey !=null and companyKey != ''">
             , company_key=#{companyKey}
         </if>
@@ -122,7 +127,12 @@
         <if test="outputAssetReduction !=null and outputAssetReduction != ''">
             , output_asset_reduction=#{outputAssetReduction}
         </if>
-        WHERE id=#{id}
+        <if test="reportTime !=null and reportTime != ''">
+            , report_time=#{reportTime}
+        </if>
+        <where>
+            id=#{id}
+        </where>
         limit 1
     </update>
 
