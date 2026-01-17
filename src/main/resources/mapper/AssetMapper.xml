@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sas.mapper.AssetMapper">
     <select id="listAssets" parameterType="java.util.Map" resultType="com.sas.entity.AssetEntity">
-        select b.*,a.name from companys as a
+        select b.*,a.name from sas.companys as a
         left join assets as b on a.id = b.company_key
         <where>
             <if test="startTime !=null and startTime !=''">
@@ -20,10 +20,10 @@
         </where>
     </select>
     <select id="selectAssetByKey" resultType="com.sas.entity.AssetEntity">
-        select * from assets where company_key=#{companyKey}
+        select * from sas.assets where company_key=#{companyKey}
     </select>
     <insert id="insertAsset"  parameterType="com.sas.entity.AssetEntity">
-        INSERT INTO assets(
+        INSERT INTO sas.assets(
         id,company_key,monetary_funds,trading_financial_assets,
         accounts_notes_receivable,prepayments,total_other_receivables,
         inventory,one_year_non_current_assets,other_current_assets,
@@ -59,7 +59,7 @@
     </insert>
 
     <update id="updateAssetById" parameterType="com.sas.entity.AssetEntity">
-        UPDATE assets
+        UPDATE sas.assets
         SET update_time=now()
         <if test="companyKey !=null and companyKey != ''">
             , company_key=#{companyKey}
@@ -137,6 +137,6 @@
     </update>
 
     <delete id="deleteAssetById">
-        DELETE FROM assets WHERE id=#{id}
+        DELETE FROM sas.assets WHERE id=#{id}
     </delete>
 </mapper>

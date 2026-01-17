@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Mapper
 public interface LaoeMapper {
-    @Select("select * from loae")
+    @Select("select * from sas.loae")
     List<LaoeEntity> selectAll();
 
     List<LaoeEntity> listLaoes(Map map);

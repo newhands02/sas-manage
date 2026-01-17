@@ -4,8 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sas.mapper.ProfitMapper">
     <select id="listProfits" parameterType="java.util.Map" resultType="com.sas.entity.ProfitEntity">
-        select b.*,a.name from companys as a
-        left join profit as b on a.id = b.company_key
+        select b.*,a.name from sas.companys as a
+        left join sas.profit as b on a.id = b.company_key
         <where>
             <if test="startTime !=null and startTime !=''">
                 and b.update_time between #{startTime} and #{endTime}
@@ -20,10 +20,10 @@
         </where>
     </select>
     <select id="selectProfitById" resultType="com.sas.entity.ProfitEntity">
-        select * from profit where company_key=#{companyKey}
+        select * from sas.profit where company_key=#{companyKey}
     </select>
     <insert id="insertProfitById"  keyProperty="id" parameterType="com.sas.entity.ProfitEntity">
-        INSERT INTO profit(id,company_key,operating_revenue,goods_sold_cost,sales_expenses,
+        INSERT INTO sas.profit(id,company_key,operating_revenue,goods_sold_cost,sales_expenses,
         administrative_expenses,rd_expense,financial_expenses,net_profit_current,net_profit,
         operating_activities_net_cash,annual_capital_expenditure,annual_depreciation_amortization,
         profit_increase,asset_adjustment_increase,report_time,update_time) VALUES(#{id},
@@ -33,7 +33,7 @@
         #{profitIncrease}, #{assetAdjustmentIncrease}, #{reportTime},NOW())
     </insert>
     <update id="updateProfitById" parameterType="com.sas.entity.ProfitEntity">
-        UPDATE profit SET
+        UPDATE sas.profit SET
         update_time=now()
         <if test="companyKey !=null and companyKey != ''">
             , company_key=#{companyKey}
@@ -86,6 +86,6 @@
         limit 1
     </update>
     <delete id="deleteProfitById">
-        DELETE FROM profit WHERE id=#{id}
+        DELETE FROM sas.profit WHERE id=#{id}
     </delete>
 </mapper>

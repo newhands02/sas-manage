@@ -11,7 +11,7 @@ import java.util.Map;
 @Mapper
 public interface CompanyMapper {
 
-    @Select("select * from company")
+    @Select("select * from sas.company")
     List<CompanyEntity> selectAll();
 
     List<CompanyEntity> listCompanys(Map map);
@@ -22,12 +22,12 @@ public interface CompanyMapper {
 
     boolean updateCompanyById(CompanyEntity companyEntity);
 
-    @Update("update companys set bactive = 0 where name = #{name} and code=#{code} limit 1")
+    @Update("update sas.companys set bactive = 0 where name = #{name} and code=#{code} limit 1")
     boolean disableCompany(Map map);
 
-    @Select("select * from companys where name = #{name} and code=#{code} limit 1")
+    @Select("select * from sas.companys where name = #{name} and code=#{code} limit 1")
     CompanyEntity selectCompanyByName(Map map);
 
-    @Update("update companys set bactive = 1 where id = #{id} limit 1")
+    @Update("update sas.companys set bactive = 1 where id = #{id} limit 1")
     boolean activeCompanyById(String id);
 }

@@ -9,7 +9,7 @@ import java.util.Map;
 
 @Mapper
 public interface AssetMapper {
-    @Select("select * from assets")
+    @Select("select * from sas.assets")
     List<AssetEntity> selectAll();
 
 

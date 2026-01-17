@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sas.mapper.LaoeMapper">
     <select id="listLaoes" parameterType="java.util.Map" resultType="com.sas.entity.LaoeEntity">
-        select b.*,a.name from companys as a
+        select b.*,a.name from sas.companys as a
         left join laoe as b on a.id = b.company_key
         <where>
             <if test="startTime !=null and startTime !=''">
@@ -20,10 +20,10 @@
         </where>
     </select>
     <select id="selectLaoeById" resultType="com.sas.entity.LaoeEntity">
-        select * from laoe where company_key=#{companyKey}
+        select * from sas.laoe where company_key=#{companyKey}
     </select>
     <insert id="insertLaoe" parameterType="com.sas.entity.LaoeEntity">
-        INSERT INTO laoe(company_key,
+        INSERT INTO sas.laoe(company_key,
         short_term_borrowing,
         financial_liabilities_included,
         accounts_payable,
@@ -61,7 +61,7 @@
         #{currentPrice},#{marketValue},#{reportTime},NOW())
     </insert>
     <update id="updateLaoeById" parameterType="com.sas.entity.LaoeEntity">
-        UPDATE laoe
+        UPDATE sas.laoe
         SET update_time=now()
         <if test="companyKey !=null and companyKey != ''">
             , company_key=#{companyKey}
@@ -129,6 +129,6 @@
         limit 1
     </update>
     <delete id="deleteLaoeById">
-        DELETE FROM laoe WHERE id=#{id}
+        DELETE FROM sas.laoe WHERE id=#{id}
     </delete>
 </mapper>

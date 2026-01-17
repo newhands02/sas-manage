@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sas.mapper.CompanyMapper">
     <select id="listCompanys" parameterType="java.util.Map" resultType="com.sas.entity.CompanyEntity">
-        select  * from companys
+        select  * from sas.companys
         <where>
             <if test="startTime !=null and startTime !=''">
                 and update_time between #{startTime} and #{endTime}
@@ -19,11 +19,11 @@
         </where>
     </select>
     <insert id="insertCompanyById"  keyProperty="id" parameterType="com.sas.entity.CompanyEntity">
-        INSERT INTO companys(id,name,code,place,update_time) VALUES(#{id}, #{name}, #{code}, #{place},NOW())
+        INSERT INTO sas.companys(id,name,code,place,update_time) VALUES(#{id}, #{name}, #{code}, #{place},NOW())
     </insert>
 
     <update id="updateById" parameterType="com.sas.entity.CompanyEntity">
-        UPDATE companys
+        UPDATE sas.companys
         SET name=#{name},
         code=#{code},
         place=#{place},
@@ -32,6 +32,6 @@
     </update>
 
     <delete id="deleteCompanyById">
-        DELETE FROM companys WHERE id=#{id} limit 1
+        DELETE FROM sas.companys WHERE id=#{id} limit 1
     </delete>
 </mapper>
