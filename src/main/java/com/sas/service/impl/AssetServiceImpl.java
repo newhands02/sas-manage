@@ -32,4 +32,18 @@ public class AssetServiceImpl implements AssetService {
 
         return result;
     }
+
+    @Override
+    public Message getAssetByCompanyKey(String companyKey) {
+        Message result=null;
+        try {
+            AssetEntity assetEntity = assetMapper.selectAssetByKey(companyKey);
+            result=Message.success(assetEntity);
+        }catch (Exception e){
+            log.info(e.getLocalizedMessage());
+            result=Message.error(e);
+        }
+
+        return result;
+    }
 }

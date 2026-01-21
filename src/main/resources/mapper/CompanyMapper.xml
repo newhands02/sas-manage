@@ -31,7 +31,7 @@
         WHERE id=#{id}
     </update>
 
-    <delete id="deleteCompanyById">
-        DELETE FROM sas.companys WHERE id=#{id} limit 1
+    <delete id="deleteCompanyById" parameterType="java.lang.String">
+        DELETE FROM sas.companys WHERE id=#{id}
     </delete>
 </mapper>

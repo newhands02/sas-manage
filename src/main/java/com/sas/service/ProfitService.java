@@ -15,4 +15,6 @@ public interface ProfitService {
      * @return Message<Profit>
      */
     public Message listProfits(JSONObject params);
+
+    public Message getProfitByCompanyKey(String companyKey);
 }

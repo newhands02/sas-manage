@@ -3,8 +3,6 @@ package com.sas.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 /**
  * @author better
  */
@@ -13,6 +11,6 @@ public class CompanyEntity extends ParentEntity{
     private String id;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate updateTime;
+    private String updateTime;
 
 }

@@ -15,4 +15,6 @@ public interface AssetService {
      * @return Message<Asset>
      */
     public Message listAssets(JSONObject params);
+
+    public Message getAssetByCompanyKey(String companyKey);
 }

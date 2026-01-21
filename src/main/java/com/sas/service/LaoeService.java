@@ -15,4 +15,8 @@ public interface LaoeService {
      * @return Message<Laoe>
      */
     public Message listLaoes(JSONObject params);
+
+    public Message updateAllPrice();
+
+    public Message getLaoeByCompanyKey(String companyKey);
 }

@@ -5,7 +5,7 @@
 <mapper namespace="com.sas.mapper.AssetMapper">
     <select id="listAssets" parameterType="java.util.Map" resultType="com.sas.entity.AssetEntity">
         select b.*,a.name from sas.companys as a
-        left join assets as b on a.id = b.company_key
+        left join sas.assets as b on a.id = b.company_key
         <where>
             <if test="startTime !=null and startTime !=''">
                 and b.update_time between #{startTime} and #{endTime}
@@ -24,7 +24,7 @@
     </select>
     <insert id="insertAsset"  parameterType="com.sas.entity.AssetEntity">
         INSERT INTO sas.assets(
-        id,company_key,monetary_funds,trading_financial_assets,
+        company_key,monetary_funds,trading_financial_assets,
         accounts_notes_receivable,prepayments,total_other_receivables,
         inventory,one_year_non_current_assets,other_current_assets,
         available_for_sale_financial_assets,held_to_maturity_investment,
@@ -32,7 +32,7 @@
         other_non_current_financial_assets,investment_oriented_real_estate,
         fixed_assets,construction_in_progress,intangible_assets,goodwill,
         long_term_deferred_expenses,other_non_current_assets,output_asset_reduction,report_time,
-        update_time) VALUES(#{id},
+        update_time) VALUES(
         #{companyKey}, #{monetaryFunds},
         #{tradingFinancialAssets},
         #{accountsNotesReceivable},
@@ -133,10 +133,9 @@
         <where>
             id=#{id}
         </where>
-        limit 1
     </update>
 
-    <delete id="deleteAssetById">
-        DELETE FROM sas.assets WHERE id=#{id}
+    <delete id="deleteAssetById" parameterType="java.lang.String">
+        DELETE FROM sas.assets WHERE company_key=#{id}
     </delete>
 </mapper>

@@ -5,7 +5,7 @@
 <mapper namespace="com.sas.mapper.LaoeMapper">
     <select id="listLaoes" parameterType="java.util.Map" resultType="com.sas.entity.LaoeEntity">
         select b.*,a.name from sas.companys as a
-        left join laoe as b on a.id = b.company_key
+        left join sas.laoe as b on a.id = b.company_key
         <where>
             <if test="startTime !=null and startTime !=''">
                 and b.update_time between #{startTime} and #{endTime}
@@ -126,9 +126,21 @@
         <where>
             id=#{id}
         </where>
-        limit 1
     </update>
-    <delete id="deleteLaoeById">
-        DELETE FROM sas.laoe WHERE id=#{id}
+    <delete id="deleteLaoeById" parameterType="java.lang.String">
+        DELETE FROM sas.laoe WHERE company_key=#{id}
     </delete>
+    <update id="updatePriceByCompanyKey" parameterType="com.sas.entity.LaoeEntity">
+        UPDATE sas.laoe
+        SET update_time=now()
+        <if test="currentPrice !=null and currentPrice != ''">
+            , current_price=#{currentPrice}
+        </if>
+        <if test="marketValue !=null and marketValue != ''">
+            , market_value=#{marketValue}
+        </if>
+        <where>
+            company_key=#{companyKey}
+        </where>
+    </update>
 </mapper>

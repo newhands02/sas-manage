@@ -3,8 +3,6 @@ package com.sas.entity;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDate;
-
 /**
  * @author better
  */
@@ -56,7 +54,7 @@ public class ProfitEntity extends ParentEntity{
 
     private String reportTime;
 
-    private LocalDate updateTime;
+    private String updateTime;
 
 
 }

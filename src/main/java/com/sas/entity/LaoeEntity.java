@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.sas.utils.StringUtil;
 import lombok.Builder;
 import lombok.Data;
-import java.time.LocalDate;
 
 
 /**
@@ -55,7 +54,7 @@ public class LaoeEntity extends ParentEntity{
 
     private String reportTime;
 
-    private LocalDate updateTime;
+    private String updateTime;
 
     public static LaoeEntity getLaoeDataByJson(JSONObject data, String companyKey){
         return LaoeEntity.builder()

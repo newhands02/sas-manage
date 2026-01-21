@@ -23,10 +23,10 @@
         select * from sas.profit where company_key=#{companyKey}
     </select>
     <insert id="insertProfitById"  keyProperty="id" parameterType="com.sas.entity.ProfitEntity">
-        INSERT INTO sas.profit(id,company_key,operating_revenue,goods_sold_cost,sales_expenses,
+        INSERT INTO sas.profit(company_key,operating_revenue,goods_sold_cost,sales_expenses,
         administrative_expenses,rd_expense,financial_expenses,net_profit_current,net_profit,
         operating_activities_net_cash,annual_capital_expenditure,annual_depreciation_amortization,
-        profit_increase,asset_adjustment_increase,report_time,update_time) VALUES(#{id},
+        profit_increase,asset_adjustment_increase,report_time,update_time) VALUES(
         #{companyKey}, #{operatingRevenue}, #{goodsSoldCost}, #{salesExpenses},
         #{administrativeExpenses}, #{rdExpense}, #{financialExpenses}, #{netProfitCurrent}, #{netProfit},
         #{operatingActivitiesNetCash}, #{annualCapitalExpenditure}, #{annualDepreciationAmortization},
@@ -83,9 +83,8 @@
         <where>
             id=#{id}
         </where>
-        limit 1
     </update>
-    <delete id="deleteProfitById">
-        DELETE FROM sas.profit WHERE id=#{id}
+    <delete id="deleteProfitById" parameterType="java.lang.String">
+        DELETE FROM sas.profit WHERE company_key=#{id}
     </delete>
 </mapper>

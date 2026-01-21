@@ -22,12 +22,12 @@ public interface CompanyMapper {
 
     boolean updateCompanyById(CompanyEntity companyEntity);
 
-    @Update("update sas.companys set bactive = 0 where name = #{name} and code=#{code} limit 1")
+    @Update("update sas.companys set bactive = 0 where name = #{name} and code=#{code}")
     boolean disableCompany(Map map);
 
-    @Select("select * from sas.companys where name = #{name} and code=#{code} limit 1")
+    @Select("select * from sas.companys where name = #{name} and code=#{code}")
     CompanyEntity selectCompanyByName(Map map);
 
-    @Update("update sas.companys set bactive = 1 where id = #{id} limit 1")
+    @Update("update sas.companys set bactive = 1 where id = #{id}")
     boolean activeCompanyById(String id);
 }

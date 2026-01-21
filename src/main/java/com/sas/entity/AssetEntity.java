@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.sas.utils.StringUtil;
 import lombok.Builder;
 import lombok.Data;
-import java.time.LocalDate;
 
 /**
  * @author better
@@ -60,7 +59,7 @@ public class AssetEntity extends ParentEntity{
     private String outputAssetReduction;
     private String reportTime;
 
-    private LocalDate updateTime;
+    private String updateTime;
 
     public static AssetEntity getAssetDataByJson(JSONObject data, String companyKey){
         return AssetEntity.builder()

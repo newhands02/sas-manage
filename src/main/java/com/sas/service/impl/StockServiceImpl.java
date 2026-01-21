@@ -76,56 +76,7 @@ public class StockServiceImpl implements StockService {
             List<ResultEntity> resultList=new ArrayList<>();
             List<CompanyEntity> companyEntities = companyMapper.listCompanys(params);
             for (CompanyEntity companyEntity : companyEntities) {
-                String companyKey = companyEntity.getId();
-                AssetEntity assetEntity = assetMapper.selectAssetByKey(companyKey);
-                LaoeEntity laoeEntity = laoeMapper.selectLaoeById(companyKey);
-                ProfitEntity profitEntity = profitMapper.selectProfitById(companyKey);
-                float profitAdjust=Float.parseFloat(profitEntity.getFinancialExpenses())
-                        +Float.parseFloat(profitEntity.getNetProfit());
-                float adjustedNetAssets=Float.parseFloat(laoeEntity.getEquityAttributableToPowner())
-                        -Float.parseFloat(assetEntity.getOutputAssetReduction())
-                        +Float.parseFloat(profitEntity.getAssetAdjustmentIncrease());
-                String netCash=StringUtil.floatRound2Str(Float.parseFloat(assetEntity.getMonetaryFunds())
-                        +Float.parseFloat(assetEntity.getTradingFinancialAssets())
-                        +Float.parseFloat(assetEntity.getPrepayments())
-                        -Float.parseFloat(laoeEntity.getShortTermBorrowing())
-                        -Float.parseFloat(laoeEntity.getFinancialLiabilitiesIncluded())
-                        -Float.parseFloat(laoeEntity.getOneYearNonCurrentLiabilities())
-                        -Float.parseFloat(laoeEntity.getLongTermLoans())
-                        -Float.parseFloat(laoeEntity.getPayableBonds()));
-                float roe15=(profitAdjust/adjustedNetAssets)*100;
-                String pe=StringUtil.doubleRound2Str(Float.parseFloat(laoeEntity.getMarketValue())/profitAdjust/0.06);
-                String pb=StringUtil.doubleRound2Str(Float.parseFloat(laoeEntity.getMarketValue())/(roe15/6*adjustedNetAssets));
-                String pedroe=StringUtil.doubleRound2Str(
-                        (Float.parseFloat(laoeEntity.getMarketValue())-Float.parseFloat(laoeEntity.getLongTermLoans()))
-                                /Float.parseFloat(laoeEntity.getOneYearNonCurrentLiabilities())
-                                /Float.parseFloat(laoeEntity.getPayableBonds()));
-                String ardrr=StringUtil.doubleRound2Str(
-                        Float.parseFloat(assetEntity.getAccountsNotesReceivable())/Float.parseFloat(profitEntity.getOperatingRevenue()));
-                String equityMultiplier=StringUtil.doubleRound2Str(
-                        (Float.parseFloat(laoeEntity.getTotalLiabilities())
-                                +Float.parseFloat(laoeEntity.getEquityAttributableToPowner()))
-                                /Float.parseFloat(laoeEntity.getEquityAttributableToPowner()));
-                String grossProfitMargin=StringUtil.doubleRound2Str(
-                        (Float.parseFloat(profitEntity.getOperatingRevenue())
-                                -Float.parseFloat(profitEntity.getGoodsSoldCost()))
-                        /Float.parseFloat(profitEntity.getOperatingRevenue()));
-                String profitCashFlowCurrent=StringUtil.doubleRound2Str(
-                        Float.parseFloat(profitEntity.getNetProfit())
-                                /Float.parseFloat(profitEntity.getOperatingActivitiesNetCash()));
-                ResultEntity entity = ResultEntity.builder().name(companyEntity.getName())
-                        .place(companyEntity.getPlace()).code(companyEntity.getCode())
-                        .reportDate(assetEntity.getReportTime()).adjustCash("0")
-                        .bondCost("0.02").profitAdjustExcept("0")
-                        .capitalExpenditure(profitEntity.getProfitIncrease())
-                        .profitAdjust(StringUtil.floatRound2Str(profitAdjust))
-                        .netCash(netCash)
-                        .adjustedNetAssets(StringUtil.floatRound2Str(adjustedNetAssets))
-                        .roe15(StringUtil.floatRound2Str(roe15))
-                        .pe(pe).pb(pb).pedroe(pedroe).ardrr(ardrr)
-                        .equityMultiplier(equityMultiplier)
-                        .grossProfitMargin(grossProfitMargin)
-                        .profitCashFlowCurrent(profitCashFlowCurrent).build();
+                ResultEntity entity = getResultEntityByCompany(companyEntity);
                 resultList.add(entity);
             }
             result=Message.success(resultList);
@@ -135,7 +86,71 @@ public class StockServiceImpl implements StockService {
         }
         return result;
     }
-
+    @Override
+    public Message getResultByCompany(CompanyEntity companyEntity){
+        Message result=null;
+        try {
+            ResultEntity entity = getResultEntityByCompany(companyEntity);
+            result=Message.success(entity);
+        }catch (Exception e){
+            result=Message.error(e);
+            log.error(e.getMessage());
+        }
+        return result;
+    }
+    private ResultEntity getResultEntityByCompany(CompanyEntity companyEntity){
+        String companyKey = companyEntity.getId();
+        AssetEntity assetEntity = assetMapper.selectAssetByKey(companyKey);
+        LaoeEntity laoeEntity = laoeMapper.selectLaoeById(companyKey);
+        ProfitEntity profitEntity = profitMapper.selectProfitById(companyKey);
+        float profitAdjust=Float.parseFloat(profitEntity.getFinancialExpenses())
+                +Float.parseFloat(profitEntity.getNetProfit());
+        float adjustedNetAssets=Float.parseFloat(laoeEntity.getEquityAttributableToPowner())
+                -Float.parseFloat(assetEntity.getOutputAssetReduction())
+                +Float.parseFloat(profitEntity.getAssetAdjustmentIncrease());
+        String netCash=StringUtil.floatRound2Str(Float.parseFloat(assetEntity.getMonetaryFunds())
+                +Float.parseFloat(assetEntity.getTradingFinancialAssets())
+                +Float.parseFloat(assetEntity.getPrepayments())
+                -Float.parseFloat(laoeEntity.getShortTermBorrowing())
+                -Float.parseFloat(laoeEntity.getFinancialLiabilitiesIncluded())
+                -Float.parseFloat(laoeEntity.getOneYearNonCurrentLiabilities())
+                -Float.parseFloat(laoeEntity.getLongTermLoans())
+                -Float.parseFloat(laoeEntity.getPayableBonds()));
+        float roe15=(profitAdjust/adjustedNetAssets)*100;
+        String pe=StringUtil.doubleRound2Str(Float.parseFloat(laoeEntity.getMarketValue())/profitAdjust/0.06);
+        String pb=StringUtil.doubleRound2Str(Float.parseFloat(laoeEntity.getMarketValue())/(roe15/6*adjustedNetAssets));
+        String pedroe=StringUtil.doubleRound2Str(
+                (Float.parseFloat(laoeEntity.getMarketValue())-Float.parseFloat(laoeEntity.getLongTermLoans()))
+                        /Float.parseFloat(laoeEntity.getOneYearNonCurrentLiabilities())
+                        /Float.parseFloat(laoeEntity.getPayableBonds()));
+        String ardrr=StringUtil.doubleRound2Str(
+                Float.parseFloat(assetEntity.getAccountsNotesReceivable())/Float.parseFloat(profitEntity.getOperatingRevenue()));
+        String equityMultiplier=StringUtil.doubleRound2Str(
+                (Float.parseFloat(laoeEntity.getTotalLiabilities())
+                        +Float.parseFloat(laoeEntity.getEquityAttributableToPowner()))
+                        /Float.parseFloat(laoeEntity.getEquityAttributableToPowner()));
+        String grossProfitMargin=StringUtil.doubleRound2Str(
+                (Float.parseFloat(profitEntity.getOperatingRevenue())
+                        -Float.parseFloat(profitEntity.getGoodsSoldCost()))
+                        /Float.parseFloat(profitEntity.getOperatingRevenue()));
+        String profitCashFlowCurrent=StringUtil.doubleRound2Str(
+                Float.parseFloat(profitEntity.getNetProfit())
+                        /Float.parseFloat(profitEntity.getOperatingActivitiesNetCash()));
+        ResultEntity entity = ResultEntity.builder().name(companyEntity.getName())
+                .place(companyEntity.getPlace()).code(companyEntity.getCode())
+                .reportDate(assetEntity.getReportTime()).adjustCash("0")
+                .bondCost("0.02").profitAdjustExcept("0")
+                .capitalExpenditure(profitEntity.getProfitIncrease())
+                .profitAdjust(StringUtil.floatRound2Str(profitAdjust))
+                .netCash(netCash)
+                .adjustedNetAssets(StringUtil.floatRound2Str(adjustedNetAssets))
+                .roe15(StringUtil.floatRound2Str(roe15))
+                .pe(pe).pb(pb).pedroe(pedroe).ardrr(ardrr)
+                .equityMultiplier(equityMultiplier)
+                .grossProfitMargin(grossProfitMargin)
+                .profitCashFlowCurrent(profitCashFlowCurrent).build();
+        return entity;
+    }
     @Override
     public Message updateAll() {
         Message result=null;
@@ -152,7 +167,6 @@ public class StockServiceImpl implements StockService {
         }catch (Exception e){
             result=Message.error(e);
             log.error(e.getMessage());
-            e.printStackTrace();
         }
         return result;
     }
@@ -277,7 +291,8 @@ public class StockServiceImpl implements StockService {
         return laoeMapper.selectLaoeById(companyKey);
     }
 
-    private String getPriceAndMarket(String place,String symbol){
+    @Override
+    public String getPriceAndMarket(String place,String symbol){
         String url=txUrl+"/q=s_"+place+symbol;
         return restTemplate.getForObject(url, String.class);
     }
