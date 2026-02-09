@@ -4,6 +4,7 @@ package com.sas.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.sas.entity.Message;
 import com.sas.service.StockService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,11 @@ public class StockController {
     @GetMapping("/updateAll")
     public Message updateAll(){
         return stockService.updateAll();
+    }
+
+    @GetMapping("/updateByCode")
+    public Message updateByCode(@Param("code") String code){
+        return stockService.updateByCode(code);
     }
 
     @GetMapping("/getResultList")

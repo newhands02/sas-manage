@@ -171,7 +171,26 @@ public class StockServiceImpl implements StockService {
         return result;
     }
 
-    public void updateProfitAndCash(String symbol,String companyKey){
+    @Override
+    public Message updateByCode(String code) {
+        Message result=null;
+        try {
+            if (!StringUtils.isEmpty(code)){
+                CompanyEntity companyEntity = companyMapper.getCompanyByCode(code);
+                if (companyEntity!=null){
+                    updateAssetAndDebt(companyEntity);
+                    updateProfitAndCash(code,companyEntity.getId());
+                }
+            }
+            result=Message.success("成功");
+        }catch (Exception e){
+            result=Message.error(e);
+            log.error(e.getMessage());
+        }
+        return result;
+    }
+
+    public void updateProfitAndCash(String symbol, String companyKey){
         JSONObject seasonParam=new JSONObject();
         seasonParam.put("indicator","按单季度");
         seasonParam.put("symbol",symbol);
@@ -301,7 +320,6 @@ public class StockServiceImpl implements StockService {
         String indicator=params.getString("indicator");
         String symbol=params.getString("symbol");
         String targetUrl=url+"?indicator="+indicator+"&symbol="+symbol;
-        System.out.println("url是"+targetUrl);
         return restTemplate.getForObject(targetUrl, JSONArray.class);
     }
 }

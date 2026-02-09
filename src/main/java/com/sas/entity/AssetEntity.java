@@ -66,7 +66,7 @@ public class AssetEntity extends ParentEntity{
                 .companyKey(companyKey)
                 .monetaryFunds(StringUtil.spiltJsonStrUnit(data,"货币资金"))
                 .tradingFinancialAssets(StringUtil.spiltJsonStrUnit(data,"交易性金融资产"))
-                .accountsNotesReceivable(StringUtil.spiltJsonStrUnit(data,"应收账款及应收票据"))
+                .accountsNotesReceivable(StringUtil.spiltJsonStrUnit(data,"应收票据及应收账款"))
                 .prepayments(StringUtil.spiltJsonStrUnit(data,"预付款项"))
                 .totalOtherReceivables(StringUtil.spiltJsonStrUnit(data,"其他应收款合计"))
                 .inventory(StringUtil.spiltJsonStrUnit(data,"存货"))

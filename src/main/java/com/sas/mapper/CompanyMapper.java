@@ -30,4 +30,6 @@ public interface CompanyMapper {
 
     @Update("update sas.companys set bactive = 1 where id = #{id}")
     boolean activeCompanyById(String id);
+
+    CompanyEntity getCompanyByCode(String code);
 }

@@ -11,7 +11,7 @@ public interface StockService {
     public void getAllDataCash(JSONObject params);
     public Message getResultList(JSONObject params);
     public Message updateAll();
-
+    public Message updateByCode(String code);
     public String getPriceAndMarket(String place,String symbol);
     public Message getResultByCompany(CompanyEntity companyEntity);
 }
